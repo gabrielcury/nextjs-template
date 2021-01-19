@@ -6,8 +6,9 @@ import Router from "next/router";
 
 import PageChange from "components/PageChange/PageChange.js";
 
+import "assets/plugins/nucleo/css/nucleo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import "assets/styles/tailwind.css";
+import "assets/scss/nextjs-argon-dashboard.scss";
 
 Router.events.on("routeChangeStart", (url) => {
   console.log(`Loading: ${url}`);
@@ -31,14 +32,12 @@ export default class MyApp extends App {
     let comment = document.createComment(`
 
 =========================================================
-* Notus NextJS - v1.0.0 based on Tailwind Starter Kit by Creative Tim
+* * NextJS Argon Dashboard v1.0.0 based on Argon Dashboard React v1.1.0
 =========================================================
 
-* Product Page: https://www.creative-tim.com/product/notus-nextjs
+* Product Page: https://www.creative-tim.com/product/nextjs-argon-dashboard
 * Copyright 2020 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/notus-nextjs/blob/master/LICENSE.md)
-
-* Tailwind Starter Kit Page: https://www.creative-tim.com/learning-lab/tailwind-starter-kit/presentation
+* Licensed under MIT (https://github.com/creativetimofficial/nextjs-argon-dashboard/blob/master/LICENSE.md)
 
 * Coded by Creative Tim
 
@@ -70,7 +69,7 @@ export default class MyApp extends App {
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
           />
-          <title>Notus NextJS by Creative Tim</title>
+          <title>NextJS Argon Dashboard by Creative Tim</title>
         </Head>
         <Layout>
           <Component {...pageProps} />

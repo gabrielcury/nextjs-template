@@ -1,99 +1,102 @@
 import React from "react";
 import Link from "next/link";
-// components
+// reactstrap components
+import {
+  UncontrolledCollapse,
+  NavbarBrand,
+  Navbar,
+  NavItem,
+  NavLink,
+  Nav,
+  Container,
+  Row,
+  Col,
+} from "reactstrap";
 
-import PagesDropdown from "components/Dropdowns/PagesDropdown.js";
-
-export default function Navbar(props) {
-  const [navbarOpen, setNavbarOpen] = React.useState(false);
-  return (
-    <>
-      <nav className="top-0 absolute z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg">
-        <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
-          <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
-            <Link href="/">
-              <a
-                className="text-white text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-no-wrap uppercase"
-                href="#pablo"
-              >
-                Notus NextJS
-              </a>
+class AdminNavbar extends React.Component {
+  render() {
+    return (
+      <>
+        <Navbar
+          className="navbar-top navbar-horizontal navbar-dark"
+          expand="md"
+        >
+          <Container className="px-4">
+            <Link href="/admin/dashboard">
+              <span>
+                <NavbarBrand href="#pablo">
+                  <img
+                    alt="..."
+                    src={require("assets/img/brand/nextjs_argon_white.png")}
+                  />
+                </NavbarBrand>
+              </span>
             </Link>
-            <button
-              className="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
-              type="button"
-              onClick={() => setNavbarOpen(!navbarOpen)}
-            >
-              <i className="text-white fas fa-bars"></i>
+            <button className="navbar-toggler" id="navbar-collapse-main">
+              <span className="navbar-toggler-icon" />
             </button>
-          </div>
-          <div
-            className={
-              "lg:flex flex-grow items-center bg-white lg:bg-transparent lg:shadow-none" +
-              (navbarOpen ? " block rounded shadow-lg" : " hidden")
-            }
-            id="example-navbar-warning"
-          >
-            <ul className="flex flex-col lg:flex-row list-none mr-auto">
-              <li className="flex items-center">
-                <a
-                  className="lg:text-white lg:hover:text-gray-300 text-gray-800 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
-                  href="https://www.creative-tim.com/learning-lab/tailwind/nextjs/overview/notus?ref=nnjs-auth-navbar"
-                >
-                  <i className="lg:text-gray-300 text-gray-500 far fa-file-alt text-lg leading-lg mr-2" />{" "}
-                  Docs
-                </a>
-              </li>
-            </ul>
-            <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
-              <li className="flex items-center">
-                <PagesDropdown />
-              </li>
-              <li className="flex items-center">
-                <a
-                  className="lg:text-white lg:hover:text-gray-300 text-gray-800 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
-                  href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdemos.creative-tim.com%2Fnotus-nextjs%2F"
-                  target="_blank"
-                >
-                  <i className="lg:text-gray-300 text-gray-500 fab fa-facebook text-lg leading-lg " />
-                  <span className="lg:hidden inline-block ml-2">Share</span>
-                </a>
-              </li>
-
-              <li className="flex items-center">
-                <a
-                  className="lg:text-white lg:hover:text-gray-300 text-gray-800 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
-                  href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fdemos.creative-tim.com%2Fnotus-nextjs%2F&text=Start%20your%20development%20with%20a%20Free%20Tailwind%20CSS%20and%20NextJS%20UI%20Kit%20and%20Admin.%20Let%20Notus%20NextJS%20amaze%20you%20with%20its%20cool%20features%20and%20build%20tools%20and%20get%20your%20project%20to%20a%20whole%20new%20level."
-                  target="_blank"
-                >
-                  <i className="lg:text-gray-300 text-gray-500 fab fa-twitter text-lg leading-lg " />
-                  <span className="lg:hidden inline-block ml-2">Tweet</span>
-                </a>
-              </li>
-
-              <li className="flex items-center">
-                <a
-                  className="lg:text-white lg:hover:text-gray-300 text-gray-800 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
-                  href="https://github.com/creativetimofficial/notus-nextjs?ref=nnjs-auth-navbar"
-                  target="_blank"
-                >
-                  <i className="lg:text-gray-300 text-gray-500 fab fa-github text-lg leading-lg " />
-                  <span className="lg:hidden inline-block ml-2">Star</span>
-                </a>
-              </li>
-
-              <li className="flex items-center">
-                <button
-                  className="bg-white text-gray-800 active:bg-gray-100 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
-                  type="button"
-                >
-                  <i className="fas fa-arrow-alt-circle-down"></i> Download
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </>
-  );
+            <UncontrolledCollapse navbar toggler="#navbar-collapse-main">
+              <div className="navbar-collapse-header d-md-none">
+                <Row>
+                  <Col className="collapse-brand" xs="6">
+                    <Link href="/admin/dashboard">
+                      <img
+                        alt="..."
+                        src={require("assets/img/brand/nextjs_argon_black.png")}
+                      />
+                    </Link>
+                  </Col>
+                  <Col className="collapse-close" xs="6">
+                    <button
+                      className="navbar-toggler"
+                      id="navbar-collapse-main"
+                    >
+                      <span />
+                      <span />
+                    </button>
+                  </Col>
+                </Row>
+              </div>
+              <Nav className="ml-auto" navbar>
+                <NavItem>
+                  <Link href="/admin/dashboard">
+                    <NavLink href="#pablo" className="nav-link-icon">
+                      <i className="ni ni-planet" />
+                      <span className="nav-link-inner--text">Dashboard</span>
+                    </NavLink>
+                  </Link>
+                </NavItem>
+                <NavItem>
+                  <Link href="/auth/register">
+                    <NavLink href="#pablo" className="nav-link-icon">
+                      <i className="ni ni-circle-08" />
+                      <span className="nav-link-inner--text">Register</span>
+                    </NavLink>
+                  </Link>
+                </NavItem>
+                <NavItem>
+                  <Link href="/auth/login">
+                    <NavLink href="#pablo" className="nav-link-icon">
+                      <i className="ni ni-key-25" />
+                      <span className="nav-link-inner--text">Login</span>
+                    </NavLink>
+                  </Link>
+                </NavItem>
+                <NavItem>
+                  <Link href="/admin/profile">
+                    <NavLink href="#pablo" className="nav-link-icon">
+                      <i className="ni ni-single-02" />
+                      <span className="nav-link-inner--text">Profile</span>
+                    </NavLink>
+                  </Link>
+                </NavItem>
+              </Nav>
+            </UncontrolledCollapse>
+          </Container>
+        </Navbar>
+      </>
+    );
+  }
 }
+
+export default AdminNavbar;

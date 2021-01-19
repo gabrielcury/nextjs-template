@@ -1,358 +1,280 @@
+/*eslint-disable*/
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+// nodejs library to set properties for components
+import { PropTypes } from "prop-types";
 
-import NotificationDropdown from "components/Dropdowns/NotificationDropdown.js";
-import UserDropdown from "components/Dropdowns/UserDropdown.js";
+// reactstrap components
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  CardTitle,
+  Collapse,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  FormGroup,
+  Form,
+  Input,
+  InputGroupAddon,
+  InputGroupText,
+  InputGroup,
+  Media,
+  NavbarBrand,
+  Navbar,
+  NavItem,
+  NavLink,
+  Nav,
+  Progress,
+  Table,
+  Container,
+  Row,
+  Col,
+} from "reactstrap";
 
-export default function Sidebar() {
-  const [collapseShow, setCollapseShow] = React.useState("hidden");
+var ps;
+
+function Sidebar(props) {
+  // used for checking current route
   const router = useRouter();
-  return (
-    <>
-      <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
-        <div className="md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
-          {/* Toggler */}
-          <button
-            className="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
-            type="button"
-            onClick={() => setCollapseShow("bg-white m-2 py-3 px-6")}
-          >
-            <i className="fas fa-bars"></i>
-          </button>
-          {/* Brand */}
-          <Link href="/">
-            <a
+  const [collapseOpen, setCollapseOpen] = React.useState(false);
+  // verifies if routeName is the one active (in browser input)
+  const activeRoute = (routeName) => {
+    return router.route.indexOf(routeName) > -1;
+  };
+  // toggles collapse between opened and closed (true/false)
+  const toggleCollapse = () => {
+    setCollapseOpen(!collapseOpen);
+  };
+  // closes the collapse
+  const closeCollapse = () => {
+    setCollapseOpen(false);
+  };
+  // creates the links that appear in the left menu / Sidebar
+  const createLinks = (routes) => {
+    return routes.map((prop, key) => {
+      return (
+        <NavItem key={key} active={activeRoute(prop.layout + prop.path)}>
+          <Link href={prop.layout + prop.path}>
+            <NavLink
               href="#pablo"
-              className="md:block text-left md:pb-2 text-gray-700 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-4 px-0"
+              active={activeRoute(prop.layout + prop.path)}
+              onClick={closeCollapse}
             >
-              Notus NextJS
-            </a>
+              <i className={prop.icon} />
+              {prop.name}
+            </NavLink>
           </Link>
-          {/* User */}
-          <ul className="md:hidden items-center flex flex-wrap list-none">
-            <li className="inline-block relative">
-              <NotificationDropdown />
-            </li>
-            <li className="inline-block relative">
-              <UserDropdown />
-            </li>
-          </ul>
-          {/* Collapse */}
-          <div
-            className={
-              "md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded " +
-              collapseShow
-            }
-          >
-            {/* Collapse header */}
-            <div className="md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-gray-300">
-              <div className="flex flex-wrap">
-                <div className="w-6/12">
-                  <Link href="/">
-                    <a
-                      href="#pablo"
-                      className="md:block text-left md:pb-2 text-gray-700 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-4 px-0"
-                    >
-                      Notus NextJS
+        </NavItem>
+      );
+    });
+  };
+  const { routes, logo } = props;
+  let navbarBrand = (
+    <NavbarBrand href="#pablo" className="pt-0">
+      <img alt={logo.imgAlt} className="navbar-brand-img" src={logo.imgSrc} />
+    </NavbarBrand>
+  );
+  return (
+    <Navbar
+      className="navbar-vertical fixed-left navbar-light bg-white"
+      expand="md"
+      id="sidenav-main"
+    >
+      <Container fluid>
+        {/* Toggler */}
+        <button
+          className="navbar-toggler"
+          type="button"
+          onClick={toggleCollapse}
+        >
+          <span className="navbar-toggler-icon" />
+        </button>
+        {/* Brand */}
+        {logo && logo.innerLink ? (
+          <Link href={logo.innerLink}>
+            <span>{navbarBrand}</span>
+          </Link>
+        ) : null}
+        {logo && logo.outterLink ? (
+          <a href={logo.innerLink} target="_blank">
+            {navbarBrand}
+          </a>
+        ) : null}
+        {/* User */}
+        <Nav className="align-items-center d-md-none">
+          <UncontrolledDropdown nav>
+            <DropdownToggle nav className="nav-link-icon">
+              <i className="ni ni-bell-55" />
+            </DropdownToggle>
+            <DropdownMenu
+              aria-labelledby="navbar-default_dropdown_1"
+              className="dropdown-menu-arrow"
+              right
+            >
+              <DropdownItem>Action</DropdownItem>
+              <DropdownItem>Another action</DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem>Something else here</DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+          <UncontrolledDropdown nav>
+            <DropdownToggle nav>
+              <Media className="align-items-center">
+                <span className="avatar avatar-sm rounded-circle">
+                  <img
+                    alt="..."
+                    src={require("assets/img/theme/team-1-800x800.jpg")}
+                  />
+                </span>
+              </Media>
+            </DropdownToggle>
+            <DropdownMenu className="dropdown-menu-arrow" right>
+              <DropdownItem className="noti-title" header tag="div">
+                <h6 className="text-overflow m-0">Welcome!</h6>
+              </DropdownItem>
+              <Link href="/admin/profile">
+                <DropdownItem>
+                  <i className="ni ni-single-02" />
+                  <span>My profile</span>
+                </DropdownItem>
+              </Link>
+              <Link href="/admin/profile">
+                <DropdownItem>
+                  <i className="ni ni-settings-gear-65" />
+                  <span>Settings</span>
+                </DropdownItem>
+              </Link>
+              <Link href="/admin/profile">
+                <DropdownItem>
+                  <i className="ni ni-calendar-grid-58" />
+                  <span>Activity</span>
+                </DropdownItem>
+              </Link>
+              <Link href="/admin/profile">
+                <DropdownItem>
+                  <i className="ni ni-support-16" />
+                  <span>Support</span>
+                </DropdownItem>
+              </Link>
+              <DropdownItem divider />
+              <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
+                <i className="ni ni-user-run" />
+                <span>Logout</span>
+              </DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+        </Nav>
+        {/* Collapse */}
+        <Collapse navbar isOpen={collapseOpen}>
+          {/* Collapse header */}
+          <div className="navbar-collapse-header d-md-none">
+            <Row>
+              {logo ? (
+                <Col className="collapse-brand" xs="6">
+                  {logo.innerLink ? (
+                    <Link href={logo.innerLink}>
+                      <img alt={logo.imgAlt} src={logo.imgSrc} />
+                    </Link>
+                  ) : (
+                    <a href={logo.outterLink}>
+                      <img alt={logo.imgAlt} src={logo.imgSrc} />
                     </a>
-                  </Link>
-                </div>
-                <div className="w-6/12 flex justify-end">
-                  <button
-                    type="button"
-                    className="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
-                    onClick={() => setCollapseShow("hidden")}
-                  >
-                    <i className="fas fa-times"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-            {/* Form */}
-            <form className="mt-6 mb-4 md:hidden">
-              <div className="mb-3 pt-0">
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="px-3 py-2 h-12 border border-solid  border-gray-600 placeholder-gray-400 text-gray-700 bg-white rounded text-base leading-snug shadow-none outline-none focus:outline-none w-full font-normal"
-                />
-              </div>
-            </form>
-
-            {/* Divider */}
-            <hr className="my-4 md:min-w-full" />
-            {/* Heading */}
-            <h6 className="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-              Admin Layout Pages
-            </h6>
-            {/* Navigation */}
-
-            <ul className="md:flex-col md:min-w-full flex flex-col list-none">
-              <li className="items-center">
-                <Link href="/admin/dashboard">
-                  <a
-                    href="#pablo"
-                    className={
-                      "text-xs uppercase py-3 font-bold block " +
-                      (router.pathname.indexOf("/admin/dashboard") !== -1
-                        ? "text-blue-500 hover:text-blue-600"
-                        : "text-gray-800 hover:text-gray-600")
-                    }
-                  >
-                    <i
-                      className={
-                        "fas fa-tv mr-2 text-sm " +
-                        (router.pathname.indexOf("/admin/dashboard") !== -1
-                          ? "opacity-75"
-                          : "text-gray-400")
-                      }
-                    ></i>{" "}
-                    Dashboard
-                  </a>
-                </Link>
-              </li>
-
-              <li className="items-center">
-                <Link href="/admin/settings">
-                  <a
-                    href="#pablo"
-                    className={
-                      "text-xs uppercase py-3 font-bold block " +
-                      (router.pathname.indexOf("/admin/settings") !== -1
-                        ? "text-blue-500 hover:text-blue-600"
-                        : "text-gray-800 hover:text-gray-600")
-                    }
-                  >
-                    <i
-                      className={
-                        "fas fa-tools mr-2 text-sm " +
-                        (router.pathname.indexOf("/admin/settings") !== -1
-                          ? "opacity-75"
-                          : "text-gray-400")
-                      }
-                    ></i>{" "}
-                    Settings
-                  </a>
-                </Link>
-              </li>
-
-              <li className="items-center">
-                <Link href="/admin/tables">
-                  <a
-                    href="#pablo"
-                    className={
-                      "text-xs uppercase py-3 font-bold block " +
-                      (router.pathname.indexOf("/admin/tables") !== -1
-                        ? "text-blue-500 hover:text-blue-600"
-                        : "text-gray-800 hover:text-gray-600")
-                    }
-                  >
-                    <i
-                      className={
-                        "fas fa-table mr-2 text-sm " +
-                        (router.pathname.indexOf("/admin/tables") !== -1
-                          ? "opacity-75"
-                          : "text-gray-400")
-                      }
-                    ></i>{" "}
-                    Tables
-                  </a>
-                </Link>
-              </li>
-
-              <li className="items-center">
-                <Link href="/admin/maps">
-                  <a
-                    href="#pablo"
-                    className={
-                      "text-xs uppercase py-3 font-bold block " +
-                      (router.pathname.indexOf("/admin/maps") !== -1
-                        ? "text-blue-500 hover:text-blue-600"
-                        : "text-gray-800 hover:text-gray-600")
-                    }
-                  >
-                    <i
-                      className={
-                        "fas fa-map-marked mr-2 text-sm " +
-                        (router.pathname.indexOf("/admin/maps") !== -1
-                          ? "opacity-75"
-                          : "text-gray-400")
-                      }
-                    ></i>{" "}
-                    Maps
-                  </a>
-                </Link>
-              </li>
-            </ul>
-
-            {/* Divider */}
-            <hr className="my-4 md:min-w-full" />
-            {/* Heading */}
-            <h6 className="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-              Auth Layout Pages
-            </h6>
-            {/* Navigation */}
-
-            <ul className="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
-              <li className="items-center">
-                <Link href="/auth/login">
-                  <a
-                    href="#pablo"
-                    className="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
-                  >
-                    <i className="fas fa-fingerprint text-gray-500 mr-2 text-sm"></i>{" "}
-                    Login
-                  </a>
-                </Link>
-              </li>
-
-              <li className="items-center">
-                <Link href="/auth/register">
-                  <a
-                    href="#pablo"
-                    className="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
-                  >
-                    <i className="fas fa-clipboard-list text-gray-400 mr-2 text-sm"></i>{" "}
-                    Register
-                  </a>
-                </Link>
-              </li>
-            </ul>
-
-            {/* Divider */}
-            <hr className="my-4 md:min-w-full" />
-            {/* Heading */}
-            <h6 className="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-              No Layout Pages
-            </h6>
-            {/* Navigation */}
-
-            <ul className="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
-              <li className="items-center">
-                <Link href="/landing">
-                  <a
-                    href="#pablo"
-                    className="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
-                  >
-                    <i className="fas fa-newspaper text-gray-500 mr-2 text-sm"></i>{" "}
-                    Landing Page
-                  </a>
-                </Link>
-              </li>
-
-              <li className="items-center">
-                <Link href="/profile">
-                  <a
-                    href="#pablo"
-                    className="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
-                  >
-                    <i className="fas fa-user-circle text-gray-500 mr-2 text-sm"></i>{" "}
-                    Profile Page
-                  </a>
-                </Link>
-              </li>
-            </ul>
-
-            {/* Divider */}
-            <hr className="my-4 md:min-w-full" />
-            {/* Heading */}
-            <h6 className="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-              Documentation
-            </h6>
-            {/* Navigation */}
-            <ul className="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
-              <li className="inline-flex">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/nextjs/colors/notus"
-                  target="_blank"
-                  className="text-gray-800 hover:text-gray-600 text-sm block mb-4 no-underline font-semibold"
+                  )}
+                </Col>
+              ) : null}
+              <Col className="collapse-close" xs="6">
+                <button
+                  className="navbar-toggler"
+                  type="button"
+                  onClick={toggleCollapse}
                 >
-                  <i className="fas fa-paint-brush mr-2 text-gray-400 text-base"></i>
-                  Styles
-                </a>
-              </li>
-
-              <li className="inline-flex">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/nextjs/alerts/notus"
-                  target="_blank"
-                  className="text-gray-800 hover:text-gray-600 text-sm block mb-4 no-underline font-semibold"
-                >
-                  <i className="fab fa-css3-alt mr-2 text-gray-400 text-base"></i>
-                  CSS Components
-                </a>
-              </li>
-
-              <li className="inline-flex">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/angular/overview/notus"
-                  target="_blank"
-                  className="text-gray-800 hover:text-gray-600 text-sm block mb-4 no-underline font-semibold"
-                >
-                  <i className="fab fa-angular mr-2 text-gray-400 text-base"></i>
-                  Angular
-                </a>
-              </li>
-
-              <li className="inline-flex">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/js/overview/notus"
-                  target="_blank"
-                  className="text-gray-800 hover:text-gray-600 text-sm block mb-4 no-underline font-semibold"
-                >
-                  <i className="fab fa-js-square mr-2 text-gray-400 text-base"></i>
-                  Javascript
-                </a>
-              </li>
-
-              <li className="inline-flex">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/nextjs/overview/notus"
-                  target="_blank"
-                  className="text-gray-800 hover:text-gray-600 text-sm block mb-4 no-underline font-semibold"
-                >
-                  <i className="fab fa-react mr-2 text-gray-400 text-base"></i>
-                  NextJS
-                </a>
-              </li>
-
-              <li className="inline-flex">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/react/overview/notus"
-                  target="_blank"
-                  className="text-gray-800 hover:text-gray-600 text-sm block mb-4 no-underline font-semibold"
-                >
-                  <i className="fab fa-react mr-2 text-gray-400 text-base"></i>
-                  React
-                </a>
-              </li>
-
-              <li className="inline-flex">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/svelte/overview/notus"
-                  target="_blank"
-                  className="text-gray-800 hover:text-gray-600 text-sm block mb-4 no-underline font-semibold"
-                >
-                  <i className="fas fa-link mr-2 text-gray-400 text-base"></i>
-                  Svelte
-                </a>
-              </li>
-
-              <li className="inline-flex">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/vue/overview/notus"
-                  target="_blank"
-                  className="text-gray-800 hover:text-gray-600 text-sm block mb-4 no-underline font-semibold"
-                >
-                  <i className="fab fa-vuejs mr-2 text-gray-400 text-base"></i>
-                  VueJS
-                </a>
-              </li>
-            </ul>
+                  <span />
+                  <span />
+                </button>
+              </Col>
+            </Row>
           </div>
-        </div>
-      </nav>
-    </>
+          {/* Form */}
+          <Form className="mt-4 mb-3 d-md-none">
+            <InputGroup className="input-group-rounded input-group-merge">
+              <Input
+                aria-label="Search"
+                className="form-control-rounded form-control-prepended"
+                placeholder="Search"
+                type="search"
+              />
+              <InputGroupAddon addonType="prepend">
+                <InputGroupText>
+                  <span className="fa fa-search" />
+                </InputGroupText>
+              </InputGroupAddon>
+            </InputGroup>
+          </Form>
+          {/* Navigation */}
+          <Nav navbar>{createLinks(routes)}</Nav>
+          {/* Divider */}
+          <hr className="my-3" />
+          {/* Heading */}
+          <h6 className="navbar-heading text-muted">Documentation</h6>
+          {/* Navigation */}
+          <Nav className="mb-md-3" navbar>
+            <NavItem>
+              <NavLink href="https://www.creative-tim.com/learning-lab/nextjs/overview/argon-dashboard?ref=njsad-admin-sidebar">
+                <i className="ni ni-spaceship" />
+                Getting started
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="https://www.creative-tim.com/learning-lab/nextjs/colors/argon-dashboard?ref=njsad-admin-sidebar">
+                <i className="ni ni-palette" />
+                Foundation
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="https://www.creative-tim.com/learning-lab/nextjs/avatar/argon-dashboard?ref=njsad-admin-sidebar">
+                <i className="ni ni-ui-04" />
+                Components
+              </NavLink>
+            </NavItem>
+          </Nav>
+          <Nav className="mb-md-3" navbar>
+            <NavItem className="active-pro active">
+              <NavLink href="https://www.creative-tim.com/product/argon-dashboard-pro-react?ref=njsad-admin-sidebar">
+                <i className="ni ni-spaceship" />
+                Upgrade to PRO
+              </NavLink>
+            </NavItem>
+          </Nav>
+        </Collapse>
+      </Container>
+    </Navbar>
   );
 }
+
+Sidebar.defaultProps = {
+  routes: [{}],
+};
+
+Sidebar.propTypes = {
+  // links that will be displayed inside the component
+  routes: PropTypes.arrayOf(PropTypes.object),
+  logo: PropTypes.shape({
+    // innerLink is for links that will direct the user within the app
+    // it will be rendered as <Link href="...">...</Link> tag
+    innerLink: PropTypes.string,
+    // outterLink is for links that will direct the user outside the app
+    // it will be rendered as simple <a href="...">...</a> tag
+    outterLink: PropTypes.string,
+    // the image src of the logo
+    imgSrc: PropTypes.string.isRequired,
+    // the alt for the img
+    imgAlt: PropTypes.string.isRequired,
+  }),
+};
+
+export default Sidebar;

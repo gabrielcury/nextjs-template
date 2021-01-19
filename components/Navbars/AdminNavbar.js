@@ -1,41 +1,107 @@
 import React from "react";
+import Link from "next/link";
+// reactstrap components
+import {
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  Form,
+  FormGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Input,
+  InputGroup,
+  Navbar,
+  Nav,
+  Container,
+  Media,
+} from "reactstrap";
 
-import UserDropdown from "components/Dropdowns/UserDropdown.js";
-
-export default function Navbar() {
-  return (
-    <>
-      {/* Navbar */}
-      <nav className="absolute top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-no-wrap md:justify-start flex items-center p-4">
-        <div className="w-full mx-autp items-center flex justify-between md:flex-no-wrap flex-wrap md:px-10 px-4">
-          {/* Brand */}
-          <a
-            className="text-white text-sm uppercase hidden lg:inline-block font-semibold"
-            href="#pablo"
-            onClick={(e) => e.preventDefault()}
-          >
-            Dashboard
-          </a>
-          {/* Form */}
-          <form className="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
-            <div className="relative flex w-full flex-wrap items-stretch">
-              <span className="z-10 h-full leading-snug font-normal absolute text-center text-gray-400 absolute bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3">
-                <i className="fas fa-search"></i>
-              </span>
-              <input
-                type="text"
-                placeholder="Search here..."
-                className="px-3 py-3 placeholder-gray-400 text-gray-700 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full pl-10"
-              />
-            </div>
-          </form>
-          {/* User */}
-          <ul className="flex-col md:flex-row list-none items-center hidden md:flex">
-            <UserDropdown />
-          </ul>
-        </div>
-      </nav>
-      {/* End Navbar */}
-    </>
-  );
+class AdminNavbar extends React.Component {
+  render() {
+    return (
+      <>
+        <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
+          <Container fluid>
+            <Link href="/admin/dashboard">
+              <a className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block">
+                {this.props.brandText}
+              </a>
+            </Link>
+            <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+              <FormGroup className="mb-0">
+                <InputGroup className="input-group-alternative">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      <i className="fas fa-search" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input placeholder="Search" type="text" />
+                </InputGroup>
+              </FormGroup>
+            </Form>
+            <Nav className="align-items-center d-none d-md-flex" navbar>
+              <UncontrolledDropdown nav>
+                <DropdownToggle className="pr-0" nav>
+                  <Media className="align-items-center">
+                    <span className="avatar avatar-sm rounded-circle">
+                      <img
+                        alt="..."
+                        src={require("assets/img/theme/team-4-800x800.jpg")}
+                      />
+                    </span>
+                    <Media className="ml-2 d-none d-lg-block">
+                      <span className="mb-0 text-sm font-weight-bold">
+                        Jessica Jones
+                      </span>
+                    </Media>
+                  </Media>
+                </DropdownToggle>
+                <DropdownMenu className="dropdown-menu-arrow" right>
+                  <DropdownItem className="noti-title" header tag="div">
+                    <h6 className="text-overflow m-0">Welcome!</h6>
+                  </DropdownItem>
+                  <Link href="/admin/profile">
+                    <DropdownItem>
+                      <i className="ni ni-single-02" />
+                      <span>My profile</span>
+                    </DropdownItem>
+                  </Link>
+                  <Link href="/admin/profile">
+                    <DropdownItem>
+                      <i className="ni ni-settings-gear-65" />
+                      <span>Settings</span>
+                    </DropdownItem>
+                  </Link>
+                  <Link href="/admin/profile">
+                    <DropdownItem>
+                      <i className="ni ni-calendar-grid-58" />
+                      <span>Activity</span>
+                    </DropdownItem>
+                  </Link>
+                  <Link href="/admin/profile">
+                    <DropdownItem>
+                      <i className="ni ni-support-16" />
+                      <span>Support</span>
+                    </DropdownItem>
+                  </Link>
+                  <DropdownItem divider />
+                  <DropdownItem
+                    href="#pablo"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <i className="ni ni-user-run" />
+                    <span>Logout</span>
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </Nav>
+          </Container>
+        </Navbar>
+      </>
+    );
+  }
 }
+
+export default AdminNavbar;

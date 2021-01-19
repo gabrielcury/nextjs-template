@@ -1,25 +1,51 @@
 import React from "react";
-
-// components
-
+import { useRouter } from "next/router";
+// reactstrap components
+import { Container } from "reactstrap";
+// core components
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
+import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
-import HeaderStats from "components/Headers/HeaderStats.js";
-import FooterAdmin from "components/Footers/FooterAdmin.js";
 
-export default function Admin({ children }) {
+import routes from "routes.js";
+
+function Admin(props) {
+  // used for checking current route
+  const router = useRouter();
+  let mainContentRef = React.createRef();
+  React.useEffect(() => {
+    document.documentElement.scrollTop = 0;
+    document.scrollingElement.scrollTop = 0;
+    mainContentRef.current.scrollTop = 0;
+  }, []);
+  const getBrandText = () => {
+    for (let i = 0; i < routes.length; i++) {
+      if (router.route.indexOf(routes[i].layout + routes[i].path) !== -1) {
+        return routes[i].name;
+      }
+    }
+    return "Brand";
+  };
   return (
     <>
-      <Sidebar />
-      <div className="relative md:ml-64 bg-gray-200">
-        <AdminNavbar />
-        {/* Header */}
-        <HeaderStats />
-        <div className="px-4 md:px-10 mx-auto w-full -m-24">
-          {children}
-          <FooterAdmin />
-        </div>
+      <Sidebar
+        {...props}
+        routes={routes}
+        logo={{
+          innerLink: "/admin/index",
+          imgSrc: require("assets/img/brand/nextjs_argon_black.png"),
+          imgAlt: "...",
+        }}
+      />
+      <div className="main-content" ref={mainContentRef}>
+        <AdminNavbar {...props} brandText={getBrandText()} />
+        {props.children}
+        <Container fluid>
+          <AdminFooter />
+        </Container>
       </div>
     </>
   );
 }
+
+export default Admin;
